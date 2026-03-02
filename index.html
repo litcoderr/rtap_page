@@ -49,106 +49,93 @@
 <!-- Body Start -->
 <body>
 
-  <!-- Hero: fullscreen centered -->
-  <section class="hero hero-fullscreen">
-    <div class="hero-body">
-      <div class="container is-max-desktop is-max-mobile">
-        <div class="columns is-centered">
-          <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title" style="font-size: 30pt;">
-              <strong>R</strong>ecursive <strong>T</strong>hink-<strong>A</strong>nswer <strong>P</strong>rocess
-              <br>for LLMs and VLMs
-            </h1>
+  <!-- Scroll container: hero + video overlay -->
+  <div id="video-scroll-container">
+    <div id="video-sticky-frame">
 
-            <div class="is-size-5 publication-authors">
-              <!-- Paper authors -->
-              <span class="author-block">
-                <a href="https://sites.google.com/view/byungkwanlee">Byung-Kwan Lee</a><sup>*†</sup>&nbsp&nbsp&nbsp
-                <br><span class="author-affiliation">KAIST</span>
-              </span>
-              &nbsp&nbsp&nbsp
-              <span class="author-block">
-                <a href="https://litcoderr.github.io/#/">Youngchae Chee</a><sup>*</sup>&nbsp&nbsp&nbsp
-                <br><span class="author-affiliation">KAIST</span>
-              </span>
-              &nbsp&nbsp&nbsp
-              <span class="author-block">
-                <a href="https://www.ivllab.kaist.ac.kr/ivylab-ivllab">Yong Man Ro</a>
-                <br><span class="author-affiliation">KAIST</span>
-              </span>
-            </div>
-
-            <div class="is-size-4 publication-authors">
-            <span class="eql-cntrb">
-              <br>
-                <small>
-                <sup>*</sup>Equal Contribution&nbsp&nbsp&nbsp&nbsp<sup>†</sup>Currently Research Scientist at NVIDIA
-                </small>
-            </span>
-            </div>
-
-            <div class="conference">CVPR 2026 Findings</div>
-
+      <!-- Hero content layer -->
+      <div id="hero-content">
+        <div class="container is-max-desktop is-max-mobile">
+          <div class="columns is-centered">
             <div class="column has-text-centered">
-            <div class="publication-links">
+              <h1 class="title is-1 publication-title" style="font-size: 30pt;">
+                <strong>R</strong>ecursive <strong>T</strong>hink-<strong>A</strong>nswer <strong>P</strong>rocess
+                <br>for LLMs and VLMs
+              </h1>
 
-            <!-- Arxiv PDF link -->
-            <span class="link-block">
-            <a href=""
-            class="external-link button is-normal is-rounded is-dark">
-            <span class="icon">
-                <i class="fas fa-file-pdf"></i>
-            </span>
-            <span>ArXiv</span>
-            </a>
-            </span>
-            
-            &nbsp;
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">
+                  <a href="https://sites.google.com/view/byungkwanlee">Byung-Kwan Lee</a><sup>*†</sup>&nbsp&nbsp&nbsp
+                  <br><span class="author-affiliation">KAIST</span>
+                </span>
+                &nbsp&nbsp&nbsp
+                <span class="author-block">
+                  <a href="https://litcoderr.github.io/#/">Youngchae Chee</a><sup>*</sup>&nbsp&nbsp&nbsp
+                  <br><span class="author-affiliation">KAIST</span>
+                </span>
+                &nbsp&nbsp&nbsp
+                <span class="author-block">
+                  <a href="https://www.ivllab.kaist.ac.kr/ivylab-ivllab">Yong Man Ro</a>
+                  <br><span class="author-affiliation">KAIST</span>
+                </span>
+              </div>
 
-            <!-- Github link -->
-            <span class="link-block">
-              <a href=""
-              class="external-link button is-normal is-rounded is-dark">
-              <span class="icon">
-                  <i class="fab fa-github"></i>
-              </span>
-              <span>Code (Coming Soon!)</span>
-              </a>
-              </span>
-              
+              <div class="is-size-4 publication-authors">
+                <span class="eql-cntrb">
+                  <br>
+                  <small>
+                    <sup>*</sup>Equal Contribution&nbsp&nbsp&nbsp&nbsp<sup>†</sup>Currently Research Scientist at NVIDIA
+                  </small>
+                </span>
+              </div>
 
+              <div class="conference">CVPR 2026 Findings</div>
+
+              <div class="column has-text-centered">
+                <div class="publication-links">
+                  <span class="link-block">
+                    <a href="" class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                      <span>ArXiv</span>
+                    </a>
+                  </span>
+                  &nbsp;
+                  <span class="link-block">
+                    <a href="" class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon"><i class="fab fa-github"></i></span>
+                      <span>Code (Coming Soon!)</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Abstract -->
+          <div class="columns is-centered" style="margin-top: 0;">
+            <div class="column is-10">
+              <div class="content has-text-justified hero-abstract">
+                <span class="heading">Abstract.</span>
+Think–Answer reasoners such as DeepSeek-R1 have made notable progress by leveraging interpretable internal reasoning. However, despite the frequent presence of self-reflective cues like "Oops!", they remain vulnerable to output errors during single-pass inference. To address this limitation, we propose an efficient <b>Recursive Think–Answer Process (R-TAP)</b> that enables models to engage in iterative reasoning cycles and generate more accurate answers, going beyond conventional single-pass approaches. Central to this approach is a <b>Confidence Generator</b> that evaluates the certainty of model responses and guides subsequent improvements. By incorporating two complementary rewards—<b>Recursively Confidence Increase Reward</b> and <b>Final Answer Confidence Reward</b>—we show that R-TAP-enhanced models consistently outperform conventional single-pass methods for both large language models (LLMs) and vision-language models (VLMs). Moreover, by analyzing the frequency of "Oops"-like expressions in model responses, we find that R-TAP–applied models exhibit significantly fewer self-reflective patterns, resulting in more stable and faster inference-time reasoning.
+              </div>
             </div>
           </div>
         </div>
-        </div>
-
-        <!-- Abstract inside hero -->
-        <div class="columns is-centered" style="margin-top: 0;">
-          <div class="column is-10">
-          <div class="content has-text-justified hero-abstract">
-              <span class="heading">Abstract.</span>
-Think–Answer reasoners such as DeepSeek-R1 have made notable progress by leveraging interpretable internal reasoning. However, despite the frequent presence of self-reflective cues like "Oops!", they remain vulnerable to output errors during single-pass inference. To address this limitation, we propose an efficient <b>Recursive Think–Answer Process (R-TAP)</b> that enables models to engage in iterative reasoning cycles and generate more accurate answers, going beyond conventional single-pass approaches. Central to this approach is a <b>Confidence Generator</b> that evaluates the certainty of model responses and guides subsequent improvements. By incorporating two complementary rewards—<b>Recursively Confidence Increase Reward</b> and <b>Final Answer Confidence Reward</b>—we show that R-TAP-enhanced models consistently outperform conventional single-pass methods for both large language models (LLMs) and vision-language models (VLMs). Moreover, by analyzing the frequency of "Oops"-like expressions in model responses, we find that R-TAP–applied models exhibit significantly fewer self-reflective patterns, resulting in more stable and faster inference-time reasoning.
-          </div>
-          </div>
-        </div>
-
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- Video scroll section (Apple-style) -->
-<div id="video-scroll-container">
-  <div id="video-sticky-wrapper">
-    <div id="video-label">▶️ Overview Video</div>
-    <video id="scroll-video" muted loop playsinline preload="auto">
-      <source src="video.mp4" type="video/mp4">
-    </video>
-    <div id="video-controls">
-      <button id="video-unmute-btn" title="Unmute">🔇 Unmute</button>
+      <!-- Video overlay layer -->
+      <div id="video-overlay-layer">
+        <div id="video-label">▶️ Overview Video</div>
+        <video id="scroll-video" muted loop playsinline preload="auto" controls>
+          <source src="video.mp4" type="video/mp4">
+        </video>
+        <div id="video-controls">
+          <button id="video-unmute-btn" title="Unmute">🔇 Unmute</button>
+        </div>
+      </div>
+
     </div>
   </div>
-</div>
 
 <!-- Figure 1: LLM benchmarks -->
 <section class="section hero is-small">
@@ -359,7 +346,7 @@ Think–Answer reasoners such as DeepSeek-R1 have made notable progress by lever
 
   // ========== Apple-style scroll-triggered video ==========
   const scrollContainer = document.getElementById("video-scroll-container");
-  const stickyWrapper = document.getElementById("video-sticky-wrapper");
+  const stickyWrapper = document.getElementById("video-sticky-frame");
   const scrollVideo = document.getElementById("scroll-video");
   const unmuteBtn = document.getElementById("video-unmute-btn");
 
@@ -375,18 +362,17 @@ Think–Answer reasoners such as DeepSeek-R1 have made notable progress by lever
   function getScrollProgress() {
     const rect = scrollContainer.getBoundingClientRect();
     const containerHeight = scrollContainer.offsetHeight;
-    const viewportHeight = window.innerHeight;
-    // progress: 0 when top of container hits bottom of viewport
-    //           1 when bottom of container hits top of viewport
-    const scrolled = viewportHeight - rect.top;
-    const total = containerHeight + viewportHeight;
-    return Math.min(Math.max(scrolled / total, 0), 1);
+    // progress: 0 at top, 1 when scrolled through entirely
+    // Since container starts at page top, progress = how far we've scrolled / extra scroll room
+    const scrollRoom = containerHeight - window.innerHeight;
+    if (scrollRoom <= 0) return 0;
+    const scrolled = -rect.top;
+    return Math.min(Math.max(scrolled / scrollRoom, 0), 1);
   }
 
   function setPhase(phase) {
     if (phase === currentPhase) return;
 
-    // Remove all phase classes
     stickyWrapper.classList.remove("phase-dark", "phase-video", "phase-exit");
 
     if (phase === "dark") {
@@ -409,28 +395,55 @@ Think–Answer reasoners such as DeepSeek-R1 have made notable progress by lever
     currentPhase = phase;
   }
 
-  function onScroll() {
+  // Snap scroll helper: scroll to a target progress value smoothly
+  let isSnapping = false;
+  function snapToProgress(targetProgress) {
+    if (isSnapping) return;
+    isSnapping = true;
+    const containerTop = scrollContainer.offsetTop;
+    const scrollRoom = scrollContainer.offsetHeight - window.innerHeight;
+    const targetScroll = containerTop + targetProgress * scrollRoom;
+    window.scrollTo({ top: targetScroll, behavior: "smooth" });
+    // Release snap lock after animation completes
+    setTimeout(() => { isSnapping = false; }, 600);
+  }
+
+  // Detect when user stops scrolling in the dark zone and snap
+  let scrollTimeout = null;
+  function onScrollWithSnap() {
     const p = getScrollProgress();
 
-    // Phase thresholds (tuned for Apple-style snappy transitions)
-    // 0.00–0.15: idle (white background, hero just scrolled away)
-    // 0.15–0.25: dark (background goes black, label appears)
-    // 0.25–0.75: video (video scales in and plays)
-    // 0.75–1.00: exit (video fades, releases)
-    if (p < 0.15) {
+    // Phase thresholds
+    if (p < 0.10) {
       setPhase("idle");
-    } else if (p < 0.25) {
+    } else if (p < 0.20) {
       setPhase("dark");
-    } else if (p < 0.75) {
+    } else if (p < 0.95) {
       setPhase("video");
     } else {
       setPhase("exit");
     }
+
+    // If in the dark transition zone, schedule a snap
+    if (!isSnapping && p >= 0.05 && p < 0.25) {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const current = getScrollProgress();
+        if (current >= 0.05 && current < 0.25) {
+          // Snap to hero or video based on which is closer
+          if (current < 0.15) {
+            snapToProgress(0); // back to hero
+          } else {
+            snapToProgress(0.25); // forward to video
+          }
+        }
+      }, 150); // wait 150ms after scroll stops
+    }
   }
 
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll, { passive: true });
-  onScroll();
+  window.addEventListener("scroll", onScrollWithSnap, { passive: true });
+  window.addEventListener("resize", onScrollWithSnap, { passive: true });
+  onScrollWithSnap();
 </script>
 
 
