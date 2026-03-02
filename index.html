@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<!-- Html Start -->
+<html>
+
+<!-- Head Start -->
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags for social media banners -->
+  <meta name="description" content="R-TAP: Recursive Think-Answer Process for LLMs and VLMs">
+  <meta property="og:title" content="R-TAP: Recursive Think-Answer Process"/>
+  <meta property="og:description" content="Confidence-guided iterative reasoning for large language models and vision-language models"/>
+  <meta property="og:url" content=""/>
+  <!-- Path to banner image -->
+  <meta property="og:image" content="figures/figure4.png" />
+  <meta property="og:image:width" content="2048"/>
+  <meta property="og:image:height" content="2048"/>
+
+  <meta name="twitter:title" content="R-TAP: Recursive Think-Answer Process for LLMs and VLMs">
+  <meta name="twitter:description" content="Confidence-guided iterative reasoning for large language models and vision-language models">
+  <meta name="twitter:image" content="figures/figure4.png">
+  <meta name="twitter:card" content="Confidence-guided iterative reasoning for large language models and vision-language models">
+  <!-- Keywords for your paper to be indexed by-->
+  <meta name="keywords" content="R-TAP, Recursive Think-Answer Process, Confidence Generator, Reinforcement Learning, LLMs, VLMs, Reasoning">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>R-TAP: Recursive Think-Answer Process for LLMs and VLMs</title>
+  <link rel="shortcut icon" type="image/png" href="https://www.kaist.ac.kr/favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+  rel="stylesheet">
+
+  <link rel="stylesheet" href="css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="css/others.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+</head>
+<!-- Head End -->
+
+<!-- Body Start -->
+<body>
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop is-max-mobile">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title" style="font-size: 30pt;">
+              <strong>R</strong>ecursive <strong>T</strong>hink-<strong>A</strong>nswer <strong>P</strong>rocess
+              <br>for LLMs and VLMs
+            </h1>
+
+            <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+              <span class="author-block">
+                <a href="https://sites.google.com/view/byungkwanlee">Byung-Kwan Lee</a><sup>*†</sup>&nbsp&nbsp&nbsp
+                <br><span class="author-affiliation">KAIST</span>
+              </span>
+              &nbsp&nbsp&nbsp
+              <span class="author-block">
+                <a href="https://litcoderr.github.io/#/">Youngchae Chee</a><sup>*</sup>&nbsp&nbsp&nbsp
+                <br><span class="author-affiliation">KAIST</span>
+              </span>
+              &nbsp&nbsp&nbsp
+              <span class="author-block">
+                <a href="https://www.ivllab.kaist.ac.kr/ivylab-ivllab">Yong Man Ro</a>
+                <br><span class="author-affiliation">KAIST</span>
+              </span>
+            </div>
+
+            <div class="is-size-4 publication-authors">
+            <span class="eql-cntrb">
+              <br>
+                <small>
+                <sup>*</sup>Equal Contribution&nbsp&nbsp&nbsp&nbsp<sup>†</sup>Currently Research Scientist at NVIDIA
+                </small>
+            </span>
+            </div>
+
+            <div class="conference">CVPR 2026 Findings</div>
+
+            <div class="column has-text-centered">
+            <div class="publication-links">
+
+            <!-- Arxiv PDF link -->
+            <span class="link-block">
+            <a href=""
+            class="external-link button is-normal is-rounded is-dark">
+            <span class="icon">
+                <i class="fas fa-file-pdf"></i>
+            </span>
+            <span>ArXiv</span>
+            </a>
+            </span>
+            
+            &nbsp;
+
+            <!-- Github link -->
+            <span class="link-block">
+              <a href=""
+              class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                  <i class="fab fa-github"></i>
+              </span>
+              <span>Code (Coming Soon!)</span>
+              </a>
+              </span>
+              
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Teaser video-->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <div class="subtitle has-text-centered"
+      style="margin-top: 10pt; font-size: 20pt; color: #1690b6; font-weight: 1000;">
+      ▶️ Overview Video (Sound)
+      </div>
+      <video poster="" id="tree" autoplay controls muted loop height="100%">
+        <source src="video.mp4"
+        type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+<!-- End teaser video -->
+
+<!-- Paper Summary -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop is-max-mobile">
+  <div class="columns is-centered has-text-centered">
+  <div class="column is-four-fifths">
+  <div class="content has-text-justified">
+      <span class="heading">Abstract.</span>
+Think–Answer reasoners such as DeepSeek-R1 have made notable progress by leveraging interpretable internal reasoning. However, despite the frequent presence of self-reflective cues like "Oops!", they remain vulnerable to output errors during single-pass inference. To address this limitation, we propose an efficient <b>Recursive Think–Answer Process (R-TAP)</b> that enables models to engage in iterative reasoning cycles and generate more accurate answers, going beyond conventional single-pass approaches. Central to this approach is a <b>Confidence Generator</b> that evaluates the certainty of model responses and guides subsequent improvements. By incorporating two complementary rewards—<b>Recursively Confidence Increase Reward</b> and <b>Final Answer Confidence Reward</b>—we show that R-TAP-enhanced models consistently outperform conventional single-pass methods for both large language models (LLMs) and vision-language models (VLMs). Moreover, by analyzing the frequency of "Oops"-like expressions in model responses, we find that R-TAP–applied models exhibit significantly fewer self-reflective patterns, resulting in more stable and faster inference-time reasoning.
+  </div>
+  </div>
+  </div>
+  </div>
+</section>
+
+<!-- Figure 1: LLM benchmarks -->
+<section class="section hero is-small">
+<div class="container is-max-desktop is-max-mobile">
+<figure class="image-container">
+  <div class="zoomcaption">🔍 Click to zoom in</div>
+  <img class="clickable-image" src="figures/figure1.png">
+  <figcaption><br>Figure 1: Overall accuracy (%) of numerous large language models (LLMs) on five evaluation benchmarks—AIME25, HMMT Feb 25, OmniMath, GPQA, and LiveCodeBench.
+  </figcaption>
+</figure>
+</div>
+</section>
+
+
+<section class="section hero is-light">
+  <div class="container is-max-desktop is-max-mobile">
+  <div class="columns is-centered has-text-centered">
+  <div class="column is-four-fifths">
+  <div class="content has-text-justified">
+      <span class="heading">Motivation.</span>
+      Current Think–Answer models almost always rely on a single-pass reasoning trajectory. After generating one Think–Answer pair, the model stops its inference process—even when the reasoning is inaccurate, inconsistent, or clearly uncertain. Models often produce self-reflective cues such as "Oops!" or "Let me try again" which show their uncertainty. However, these signals are not used: the model outputs its final answer without any method for self-evaluation or additional refinement. R-TAP addresses this by introducing a <b>confidence-driven iterative reasoning framework</b> that enables dynamic re-engagement of reasoning cycles and self-corrective refinement.
+  </div>
+  </div>
+  </div>
+  </div>
+</section>
+
+
+<!-- Figure 2: VLM benchmarks -->
+<section class="section hero is-small">
+<div class="container is-max-desktop is-max-mobile">
+<figure class="image-container">
+  <div class="zoomcaption">🔍 Click to zoom in</div>
+  <img class="clickable-image" src="figures/figure2.png">
+  <figcaption><br>Figure 2: Overall accuracy (%) of numerous vision language models (VLMs) on five evaluation benchmarks—MMMU, MathVista, OlympiadBench, MathVision, and MMMU-Pro.
+  </figcaption>
+</figure>
+</div>
+</section>
+
+
+<section class="section hero is-light">
+  <div class="container is-max-desktop is-max-mobile">
+  <div class="columns is-centered has-text-centered">
+  <div class="column is-four-fifths">
+  <div class="content has-text-justified">
+      <span class="heading">Confidence Generator.</span>
+      A central component of R-TAP is the <b>Confidence Generator C<sub>ϕ</sub></b>, which provides the reliability of each response in the recursive Think-Answer trajectory. Given a question <i>q</i> and a Think-Answer response <i>o<sup>(t)</sup></i>, the Confidence Generator outputs a scalar confidence score from zero to one. It is built from the reference model structure but replaces the language head with a confidence head followed by a sigmoid activation. Importantly, the Confidence Generator is used <b>only during training</b> and removed at inference, so R-TAP introduces no additional inference-time cost.
+  </div>
+  </div>
+  </div>
+  </div>
+</section>
+
+<!-- Figure 3: Qualitative example -->
+<section class="section hero is-small">
+<div class="container is-max-desktop is-max-mobile">
+<figure class="image-container">
+  <div class="zoomcaption">🔍 Click to zoom in</div>
+  <img class="clickable-image" src="figures/figure3.png">
+  <figcaption><br>Figure 3: Qualitative example of recursive think–answer process on a combinatorics question. The model iteratively refines its solution across multiple reasoning cycles, successfully correcting initial misconceptions such as off-by-one errors.
+  </figcaption>
+</figure>
+</div>
+</section>
+
+
+<section class="section hero is-light">
+  <div class="container is-max-desktop is-max-mobile">
+  <div class="columns is-centered has-text-centered">
+  <div class="column is-four-fifths">
+  <div class="content has-text-justified">
+      <span class="heading">Confidence-Based Reward Design.</span>
+      R-TAP introduces two complementary confidence-driven rewards:
+      <ul>
+        <li>
+          <b>Recursively Confidence Increase Reward:</b> To reward meaningful refinement across recursive steps, this reward encourages the confidence score to improve from one cycle to the next: R<sub>Increase</sub> = (1/(M-1)) Σ 𝟙[Conf(t+1) > Conf(t)], where M is the effective recursion depth.
+        </li>
+        <li>
+          <b>Final Answer Confidence Reward:</b> The final answer must be sufficiently confident: R<sub>Final</sub> = 𝟙[Conf(M) ≥ τ], where τ is a preset threshold.
+        </li>
+      </ul>
+      The total reward combines these with conventional rewards: R = R<sub>Increase</sub> + R<sub>Final</sub> + R<sub>Format</sub> + R<sub>Answer</sub> + R<sub>Length</sub>.
+  </div>
+  </div>
+  </div>
+  </div>
+</section>
+
+<!-- Figure 4: Framework diagram -->
+<section class="section hero is-small">
+<div class="container is-max-desktop is-max-mobile">
+<figure class="image-container">
+  <div class="zoomcaption">🔍 Click to zoom in</div>
+  <img class="clickable-image" src="figures/figure4.png">
+  <figcaption><br>Figure 4: Recursive Think-Answer Process. Given a question <i>q</i>, base LLM/VLM π<sub>θ</sub> recursively generates multiple Think-Answers o<sup>(t)</sup> until the answer is correct. A pre-trained Confidence Generator C<sub>ϕ</sub> assesses each question and Think-Answer pair then generates confidence score Conf(t). This confidence score is used to formulate confidence-based reward—R<sub>Increase</sub> and R<sub>Final</sub>—which serves as a sufficient reinforcement signal to train the model to recursively generate higher confidence Think-Answers.
+  </figcaption>
+</figure>
+</div>
+</section>
+
+
+<section class="section hero is-light">
+  <div class="container is-max-desktop is-max-mobile">
+  <div class="columns is-centered has-text-centered">
+  <div class="column is-four-fifths">
+  <div class="content has-text-justified">
+      <span class="heading">Training Overview.</span>
+      R-TAP proceeds in two stages. <b>Stage 1</b> performs supervised learning on the Confidence Generator using binary correctness labels for each reasoning trajectory produced by the target model. <b>Stage 2</b> applies RL with GRPO to optimize the model's reasoning behavior under recursive rewards, enabling the model to generate progressively more accurate and confident reasoning across cycles. During this stage, the Confidence Generator is trained simultaneously to predict reliable confidence scores for the updated model's responses in real time. Notably, the Confidence Generator is used only during training, so R-TAP introduces <b>no additional inference-time cost</b>.
+  </div>
+  </div>
+  </div>
+  </div>
+</section>
+
+
+<!-- Figure 5: Training curves -->
+<section class="section hero is-small">
+<div class="container is-max-desktop is-max-mobile">
+<figure class="image-container">
+  <div class="zoomcaption">🔍 Click to zoom in</div>
+  <img class="clickable-image" src="figures/figure5.png">
+  <figcaption><br>Figure 5: Training curves showing the progression of three reward signals—recursively confidence increase reward, last answer's confidence reward, and accuracy reward—over iterations during GRPO. All rewards show consistent upward trends, indicating effective recursive refinement.
+  </figcaption>
+</figure>
+</div>
+</section>
+
+<section class="section hero is-light">
+  <div class="container is-max-desktop is-max-mobile">
+  <div class="columns is-centered has-text-centered">
+  <div class="column is-four-fifths">
+  <div class="content has-text-justified">
+    <span class="heading">Key Results.</span>
+    R-TAP delivers strong and consistent performance improvements across diverse language and vision-language reasoning benchmarks. R-TAP-applied models show dramatic improvements, closing the gap to OpenAI o1 and o3 models. Moreover, recursive refinement leads to a substantial reduction in "Oops!"-style self-corrections during inference, indicating that R-TAP achieves more reliable yet faster inference-time reasoning with fewer failures along the trajectory. These results demonstrate that <b>confidence-guided recursion training</b> is a powerful mechanism for enhancing both the accuracy and inference speed of modern reasoning models.
+  </div>
+  </div>
+  </div>
+  </div>
+</section>
+
+<!-- Figure 6: Oops reduction and inference time -->
+<section class="section hero is-small">
+<div class="container is-max-desktop is-max-mobile">
+<figure class="image-container">
+  <div class="zoomcaption">🔍 Click to zoom in</div>
+  <img class="clickable-image" src="figures/figure6.png">
+  <figcaption><br>Figure 6: Impact of R-TAP on reducing the number of "Oops"-style words—which corresponds to the number of erroneous reasoning—and its effect on substantially reducing inference time. (Left) Negative correlation between the number of erroneous reasoning and R-TAP train iterations. (Center) Evaluation result on the significant reduction of erroneous reasoning by applying R-TAP. (Right) Evaluation result on the substantial reduction of inference time due to the reduction of erroneous reasoning by applying R-TAP.
+  </figcaption>
+</figure>
+</div>
+</section>
+
+
+<!-- Citation for This Template -->
+<footer class="footer">
+<div class="container">
+<div class="columns is-centered">
+    <div class="column is-8">
+    <div class="content">
+
+        <p>
+        This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://byungkwanlee.github.io/RIL-page/" target="_blank">RIL</a> project page.
+        You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+        Commons Attribution-ShareAlike 4.0 International License</a>.
+        </p>
+
+    </div>
+    </div>
+</div>
+</div>
+</footer>
+
+
+<!-- Java Script -->
+<script>
+  // Get all images with the class 'clickable-image'
+  const images = document.querySelectorAll(".clickable-image");
+
+  // Create a modal for the zoom effect
+  const modal = document.createElement("div");
+  modal.className = "fullscreen-modal";
+  document.body.appendChild(modal);
+
+  const closeButton = document.createElement("div");
+  closeButton.className = "close-btn";
+  closeButton.innerHTML = "&times;";
+  modal.appendChild(closeButton);
+
+  const fullscreenImage = document.createElement("img");
+  modal.appendChild(fullscreenImage);
+
+  // Add event listeners to all images
+  images.forEach((image) => {
+    image.addEventListener("click", () => {
+      fullscreenImage.src = image.src; // Set the modal image to the clicked image
+      modal.style.display = "flex";
+    });
+  });
+
+  // Close the modal on close button click
+  closeButton.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  // Close the modal on outside click
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+
+</script>
+
+
+<!-- Body End -->
+</body>
+<!-- Html End -->
+</html>
