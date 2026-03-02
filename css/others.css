@@ -182,16 +182,14 @@
     padding: 20px 0;
   }
 
+  /* Authors stacked vertically on mobile */
+  .author-block {
+    display: block;
+    margin-bottom: 8px;
+  }
+
   #video-label {
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: none;
-    text-align: center;
-    opacity: 1;
-    font-size: 1.1rem;
-    margin-bottom: 12px;
-    color: rgba(255, 255, 255, 0.7);
+    display: none;
   }
 
   #scroll-video {
@@ -205,19 +203,7 @@
   }
 
   #video-controls {
-    position: relative;
-    bottom: auto;
-    left: auto;
-    transform: none;
-    text-align: center;
-    opacity: 1;
-    pointer-events: auto;
-    margin-top: 12px;
-  }
-
-  #video-unmute-btn {
-    padding: 8px 18px;
-    font-size: 0.8rem;
+    display: none;
   }
 }
 
