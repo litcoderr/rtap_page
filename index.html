@@ -48,7 +48,9 @@
 
 <!-- Body Start -->
 <body>
-  <section class="hero">
+
+  <!-- Hero: fullscreen centered -->
+  <section class="hero hero-fullscreen">
     <div class="hero-body">
       <div class="container is-max-desktop is-max-mobile">
         <div class="columns is-centered">
@@ -118,41 +120,35 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+        </div>
 
-<!-- Teaser video-->
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <div class="subtitle has-text-centered"
-      style="margin-top: 10pt; font-size: 20pt; color: #1690b6; font-weight: 1000;">
-      ▶️ Overview Video (Sound)
-      </div>
-      <video poster="" id="tree" autoplay controls muted loop height="100%">
-        <source src="video.mp4"
-        type="video/mp4">
-      </video>
-    </div>
-  </div>
-</section>
-<!-- End teaser video -->
-
-<!-- Paper Summary -->
-<section class="section hero is-light">
-  <div class="container is-max-desktop is-max-mobile">
-  <div class="columns is-centered has-text-centered">
-  <div class="column is-four-fifths">
-  <div class="content has-text-justified">
-      <span class="heading">Abstract.</span>
+        <!-- Abstract inside hero -->
+        <div class="columns is-centered" style="margin-top: 0;">
+          <div class="column is-10">
+          <div class="content has-text-justified hero-abstract">
+              <span class="heading">Abstract.</span>
 Think–Answer reasoners such as DeepSeek-R1 have made notable progress by leveraging interpretable internal reasoning. However, despite the frequent presence of self-reflective cues like "Oops!", they remain vulnerable to output errors during single-pass inference. To address this limitation, we propose an efficient <b>Recursive Think–Answer Process (R-TAP)</b> that enables models to engage in iterative reasoning cycles and generate more accurate answers, going beyond conventional single-pass approaches. Central to this approach is a <b>Confidence Generator</b> that evaluates the certainty of model responses and guides subsequent improvements. By incorporating two complementary rewards—<b>Recursively Confidence Increase Reward</b> and <b>Final Answer Confidence Reward</b>—we show that R-TAP-enhanced models consistently outperform conventional single-pass methods for both large language models (LLMs) and vision-language models (VLMs). Moreover, by analyzing the frequency of "Oops"-like expressions in model responses, we find that R-TAP–applied models exhibit significantly fewer self-reflective patterns, resulting in more stable and faster inference-time reasoning.
-  </div>
-  </div>
-  </div>
+          </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
 </section>
+
+<!-- Video scroll section (Apple-style) -->
+<div id="video-scroll-container">
+  <div id="video-sticky-wrapper">
+    <div id="video-label">▶️ Overview Video</div>
+    <video id="scroll-video" muted loop playsinline preload="auto">
+      <source src="video.mp4" type="video/mp4">
+    </video>
+    <div id="video-controls">
+      <button id="video-unmute-btn" title="Unmute">🔇 Unmute</button>
+    </div>
+  </div>
+</div>
 
 <!-- Figure 1: LLM benchmarks -->
 <section class="section hero is-small">
@@ -329,10 +325,9 @@ Think–Answer reasoners such as DeepSeek-R1 have made notable progress by lever
 
 <!-- Java Script -->
 <script>
-  // Get all images with the class 'clickable-image'
+  // ========== Image zoom modal ==========
   const images = document.querySelectorAll(".clickable-image");
 
-  // Create a modal for the zoom effect
   const modal = document.createElement("div");
   modal.className = "fullscreen-modal";
   document.body.appendChild(modal);
@@ -345,26 +340,97 @@ Think–Answer reasoners such as DeepSeek-R1 have made notable progress by lever
   const fullscreenImage = document.createElement("img");
   modal.appendChild(fullscreenImage);
 
-  // Add event listeners to all images
   images.forEach((image) => {
     image.addEventListener("click", () => {
-      fullscreenImage.src = image.src; // Set the modal image to the clicked image
+      fullscreenImage.src = image.src;
       modal.style.display = "flex";
     });
   });
 
-  // Close the modal on close button click
   closeButton.addEventListener("click", () => {
     modal.style.display = "none";
   });
 
-  // Close the modal on outside click
   modal.addEventListener("click", (e) => {
     if (e.target === modal) {
       modal.style.display = "none";
     }
   });
 
+  // ========== Apple-style scroll-triggered video ==========
+  const scrollContainer = document.getElementById("video-scroll-container");
+  const stickyWrapper = document.getElementById("video-sticky-wrapper");
+  const scrollVideo = document.getElementById("scroll-video");
+  const unmuteBtn = document.getElementById("video-unmute-btn");
+
+  let currentPhase = "idle"; // idle | dark | video | exit
+  let videoIsPlaying = false;
+
+  // Unmute / mute toggle
+  unmuteBtn.addEventListener("click", () => {
+    scrollVideo.muted = !scrollVideo.muted;
+    unmuteBtn.textContent = scrollVideo.muted ? "🔇 Unmute" : "🔊 Mute";
+  });
+
+  function getScrollProgress() {
+    const rect = scrollContainer.getBoundingClientRect();
+    const containerHeight = scrollContainer.offsetHeight;
+    const viewportHeight = window.innerHeight;
+    // progress: 0 when top of container hits bottom of viewport
+    //           1 when bottom of container hits top of viewport
+    const scrolled = viewportHeight - rect.top;
+    const total = containerHeight + viewportHeight;
+    return Math.min(Math.max(scrolled / total, 0), 1);
+  }
+
+  function setPhase(phase) {
+    if (phase === currentPhase) return;
+
+    // Remove all phase classes
+    stickyWrapper.classList.remove("phase-dark", "phase-video", "phase-exit");
+
+    if (phase === "dark") {
+      stickyWrapper.classList.add("phase-dark");
+    } else if (phase === "video") {
+      stickyWrapper.classList.add("phase-dark", "phase-video");
+    } else if (phase === "exit") {
+      stickyWrapper.classList.add("phase-dark", "phase-exit");
+    }
+
+    // Play / pause
+    if (phase === "video" && !videoIsPlaying) {
+      scrollVideo.play();
+      videoIsPlaying = true;
+    } else if (phase !== "video" && videoIsPlaying) {
+      scrollVideo.pause();
+      videoIsPlaying = false;
+    }
+
+    currentPhase = phase;
+  }
+
+  function onScroll() {
+    const p = getScrollProgress();
+
+    // Phase thresholds (tuned for Apple-style snappy transitions)
+    // 0.00–0.15: idle (white background, hero just scrolled away)
+    // 0.15–0.25: dark (background goes black, label appears)
+    // 0.25–0.75: video (video scales in and plays)
+    // 0.75–1.00: exit (video fades, releases)
+    if (p < 0.15) {
+      setPhase("idle");
+    } else if (p < 0.25) {
+      setPhase("dark");
+    } else if (p < 0.75) {
+      setPhase("video");
+    } else {
+      setPhase("exit");
+    }
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll, { passive: true });
+  onScroll();
 </script>
 
 
