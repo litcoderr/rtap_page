@@ -344,106 +344,103 @@ Think–Answer reasoners such as DeepSeek-R1 have made notable progress by lever
     }
   });
 
-  // ========== Apple-style scroll-triggered video ==========
+  // ========== Apple-style scroll-triggered video (desktop only) ==========
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
   const scrollContainer = document.getElementById("video-scroll-container");
   const stickyWrapper = document.getElementById("video-sticky-frame");
   const scrollVideo = document.getElementById("scroll-video");
   const unmuteBtn = document.getElementById("video-unmute-btn");
 
-  let currentPhase = "idle"; // idle | dark | video | exit
-  let videoIsPlaying = false;
-
-  // Unmute / mute toggle
+  // Unmute / mute toggle (works on both mobile and desktop)
   unmuteBtn.addEventListener("click", () => {
     scrollVideo.muted = !scrollVideo.muted;
     unmuteBtn.textContent = scrollVideo.muted ? "🔇 Unmute" : "🔊 Mute";
   });
 
-  function getScrollProgress() {
-    const rect = scrollContainer.getBoundingClientRect();
-    const containerHeight = scrollContainer.offsetHeight;
-    // progress: 0 at top, 1 when scrolled through entirely
-    // Since container starts at page top, progress = how far we've scrolled / extra scroll room
-    const scrollRoom = containerHeight - window.innerHeight;
-    if (scrollRoom <= 0) return 0;
-    const scrolled = -rect.top;
-    return Math.min(Math.max(scrolled / scrollRoom, 0), 1);
-  }
+  if (!isMobile) {
+    // ---- Desktop: full scroll animation ----
+    let currentPhase = "idle";
+    let videoIsPlaying = false;
 
-  function setPhase(phase) {
-    if (phase === currentPhase) return;
-
-    stickyWrapper.classList.remove("phase-dark", "phase-video", "phase-exit");
-
-    if (phase === "dark") {
-      stickyWrapper.classList.add("phase-dark");
-    } else if (phase === "video") {
-      stickyWrapper.classList.add("phase-dark", "phase-video");
-    } else if (phase === "exit") {
-      stickyWrapper.classList.add("phase-dark", "phase-exit");
+    function getScrollProgress() {
+      const rect = scrollContainer.getBoundingClientRect();
+      const containerHeight = scrollContainer.offsetHeight;
+      const scrollRoom = containerHeight - window.innerHeight;
+      if (scrollRoom <= 0) return 0;
+      const scrolled = -rect.top;
+      return Math.min(Math.max(scrolled / scrollRoom, 0), 1);
     }
 
-    // Play / pause
-    if (phase === "video" && !videoIsPlaying) {
-      scrollVideo.play();
-      videoIsPlaying = true;
-    } else if (phase !== "video" && videoIsPlaying) {
-      scrollVideo.pause();
-      videoIsPlaying = false;
+    function setPhase(phase) {
+      if (phase === currentPhase) return;
+
+      stickyWrapper.classList.remove("phase-dark", "phase-video", "phase-exit");
+
+      if (phase === "dark") {
+        stickyWrapper.classList.add("phase-dark");
+      } else if (phase === "video") {
+        stickyWrapper.classList.add("phase-dark", "phase-video");
+      } else if (phase === "exit") {
+        stickyWrapper.classList.add("phase-dark", "phase-exit");
+      }
+
+      if (phase === "video" && !videoIsPlaying) {
+        scrollVideo.play();
+        videoIsPlaying = true;
+      } else if (phase !== "video" && videoIsPlaying) {
+        scrollVideo.pause();
+        videoIsPlaying = false;
+      }
+
+      currentPhase = phase;
     }
 
-    currentPhase = phase;
-  }
-
-  // Snap scroll helper: scroll to a target progress value smoothly
-  let isSnapping = false;
-  function snapToProgress(targetProgress) {
-    if (isSnapping) return;
-    isSnapping = true;
-    const containerTop = scrollContainer.offsetTop;
-    const scrollRoom = scrollContainer.offsetHeight - window.innerHeight;
-    const targetScroll = containerTop + targetProgress * scrollRoom;
-    window.scrollTo({ top: targetScroll, behavior: "smooth" });
-    // Release snap lock after animation completes
-    setTimeout(() => { isSnapping = false; }, 600);
-  }
-
-  // Detect when user stops scrolling in the dark zone and snap
-  let scrollTimeout = null;
-  function onScrollWithSnap() {
-    const p = getScrollProgress();
-
-    // Phase thresholds
-    if (p < 0.10) {
-      setPhase("idle");
-    } else if (p < 0.20) {
-      setPhase("dark");
-    } else if (p < 0.95) {
-      setPhase("video");
-    } else {
-      setPhase("exit");
+    // Snap scroll helper
+    let isSnapping = false;
+    function snapToProgress(targetProgress) {
+      if (isSnapping) return;
+      isSnapping = true;
+      const containerTop = scrollContainer.offsetTop;
+      const scrollRoom = scrollContainer.offsetHeight - window.innerHeight;
+      const targetScroll = containerTop + targetProgress * scrollRoom;
+      window.scrollTo({ top: targetScroll, behavior: "smooth" });
+      setTimeout(() => { isSnapping = false; }, 600);
     }
 
-    // If in the dark transition zone, schedule a snap
-    if (!isSnapping && p >= 0.05 && p < 0.25) {
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        const current = getScrollProgress();
-        if (current >= 0.05 && current < 0.25) {
-          // Snap to hero or video based on which is closer
-          if (current < 0.15) {
-            snapToProgress(0); // back to hero
-          } else {
-            snapToProgress(0.25); // forward to video
+    let scrollTimeout = null;
+    function onScrollWithSnap() {
+      const p = getScrollProgress();
+
+      if (p < 0.10) {
+        setPhase("idle");
+      } else if (p < 0.20) {
+        setPhase("dark");
+      } else if (p < 0.95) {
+        setPhase("video");
+      } else {
+        setPhase("exit");
+      }
+
+      // Snap in dark transition zone
+      if (!isSnapping && p >= 0.05 && p < 0.25) {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          const current = getScrollProgress();
+          if (current >= 0.05 && current < 0.25) {
+            if (current < 0.15) {
+              snapToProgress(0);
+            } else {
+              snapToProgress(0.25);
+            }
           }
-        }
-      }, 150); // wait 150ms after scroll stops
+        }, 150);
+      }
     }
-  }
 
-  window.addEventListener("scroll", onScrollWithSnap, { passive: true });
-  window.addEventListener("resize", onScrollWithSnap, { passive: true });
-  onScrollWithSnap();
+    window.addEventListener("scroll", onScrollWithSnap, { passive: true });
+    window.addEventListener("resize", onScrollWithSnap, { passive: true });
+    onScrollWithSnap();
+  }
 </script>
 
 
